@@ -23,9 +23,15 @@ def main():
         print( 'Failed to determine JUNOS configuration type', file=sys.stderr )
         sys.exit(1)
 
+
+    final_file_output = ''
+    map_of_ips_to_address_books     = ()
+    map_of_ips_to_zones             = ()
+    map_of_address_books_to_zones   = ()
     # So now we have a file, wait until we get to the zone declaration part.
     with open( command_line_arguments.configfile, 'r' ) as config_file_handle:
-        current_line = config_file_handle.readline()
+        for current_line in config_file_handle:
+            
 
 
 def detect_junos_config_file_output_type( config_file ):
@@ -35,10 +41,7 @@ def detect_junos_config_file_output_type( config_file ):
     result_found = False
     display_set_input_file = False
     with open( config_file , 'r' ) as config_file_handle_to_determine_file_type_only:
-        while not config_file_handle_to_determine_file_type_only.closed and not result_found:
-            current_line = config_file_handle_to_determine_file_type_only.readline() 
-            print( 'Checking first 3 characters: "' + current_line[0:3] + '"' )
-            print( 'and close boolean evaluates to: ' + str( config_file_handle_to_determine_file_type_only.closed ))
+        for current_line in config_file_handle_to_determine_file_type_only:
             if current_line[0:3] == 'set':
                 result_found = True
                 display_set_input_file = True
